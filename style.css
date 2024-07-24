@@ -1,18 +1,31 @@
 
 .calculator{
+    text-align: center;
     margin: auto;
     width: 400px;
-    
+    border: 4px;
+    border-color: black;
+    border-style: solid;  
+    background-color: black;  
 }
 
 .display{
-    width: 392px;
+    width: 390px;
     height: 40px;
+    border-bottom: 2px solid black;
+    font-size: large;
 }
 
 .calButtons{
     display: flex;
     width: 400px;
+}
+
+button{
+    border: 2px solid black;
+    border-radius: 8px;
+    font-size: large;
+    font-weight: bold;
 }
 
 .operators{
@@ -24,6 +37,7 @@
     height: 400px;
     flex-wrap: wrap-reverse;
     flex-direction: row;
+    
 }
 .digButton{
     width: 100px;
@@ -39,6 +53,8 @@
 
 #zeroButton{
     width: 200px;
+    border: 2px solid black;
+    border-radius: 8px;
 }
 
 .clearButton{
