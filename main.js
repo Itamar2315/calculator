@@ -39,20 +39,18 @@ const divide = function(firstNum, secondNum){
     return firstNum / secondNum;
 }
 
-function operateFunc(operator){
-    const operatorsFunctions = {"+" : add, "-" : subtract
-        , "*" : multiply, "/" : divide
-    };
-    return operatorsFunctions.operator;
-}
 
 function operate(event){
-    
     const operator = event.target.textContent; 
     if (!prevOperator){
-        firstNum = Number(inputBar.value);
-        prevOperator = operator;
-        isStartingSecond = true;
+        if(operator === "="){
+            return;
+        }
+        else{
+            firstNum = Number(inputBar.value);
+            prevOperator = operator;
+            isStartingSecond = true;
+        }
     }
     else{
         let result;
@@ -85,27 +83,27 @@ function operate(event){
 }
 
 function createDigButtons(div){
-    for(let i = 0; i < 10; i++){
-        const digBtn = document.createElement("button");
-        digBtn.textContent = i;
-        div.appendChild(digBtn);
-        digBtn.addEventListener("click", addDigToInput)
+    for(let i = 1; i < 10; i++){
+        const digButton = document.createElement("button");
+        digButton.textContent = i;
+        div.appendChild(digButton);
+    }
+    const digitButtons = div.children;
+    for(let i = 0; i < digitButtons.length; i++){
+        digitButtons[i].addEventListener("click", addDigToInput);
+        digitButtons[i].classList.add("digButton");
     }
 }
 
 function createOperatesButtons(div){
     const operators = ["+", "-", "*", "/", "="]
     operators.forEach(element => {
-        const opBtn = document.createElement("button");
-        opBtn.textContent = element;
-        div.appendChild(opBtn);
-        opBtn.addEventListener("click", operate)
+        const opButton = document.createElement("button");
+        opButton.textContent = element;
+        div.appendChild(opButton);
+        opButton.addEventListener("click", operate)
+        opButton.classList.add("opButton");
     });
-}
-
-
-function takeInput(inputBar){
-    let firstNum = inputBar
 }
 
 function addDigToInput(event){
@@ -126,15 +124,14 @@ const home = document.querySelector(".home");
 const digits = document.querySelector(".digits");
 const operators = document.querySelector(".operators")
 const display = document.querySelector(".display");
-const clearBtn = document.querySelector(".clearBtn")
-const calculateBtn = document.querySelector(".calculateBtn");
+const clearButton = document.querySelector(".clearButton")
+const calculateButton = document.querySelector(".calculateButton");
 let firstNum;
 let prevOperator = null;
 let isStartingSecond = false;
 createDigButtons(digits);
 createOperatesButtons(operators);
-
-clearBtn.addEventListener("click", () => {
+clearButton.addEventListener("click", () => {
     display.value = firstNum = prevOperator = null;
-    });
-calculateBtn.addEventListener("click", operate)
+});
+

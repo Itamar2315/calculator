@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div class="home">
-        <div class="digits"></div>
-        <div class="operators"></div>
-        <button class="calculateBtn">calculate</button>
-        <button class="clearBtn">clear</button>
+    <div class="calculator">
         <input class="display" type="text">
-        
+        <div class="calButtons">
+            <div>
+                <div class="digits">
+                    <button id="zeroButton">0</button>
+                    <button id="dotButton">.</button>
+                </div>
+                <button class="clearButton">clear</button>
+            </div>
+            <div class="operators"></div>
+        </div>
     </div>
 
     <script src="main.js"></script>

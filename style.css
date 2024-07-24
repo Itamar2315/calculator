@@ -1,0 +1,48 @@
+
+.calculator{
+    margin: auto;
+    width: 400px;
+    
+}
+
+.display{
+    width: 392px;
+    height: 40px;
+}
+
+.calButtons{
+    display: flex;
+    width: 400px;
+}
+
+.operators{
+    width: 100px;
+}
+.digits{
+    display: flex;
+    width: 300px;
+    height: 400px;
+    flex-wrap: wrap-reverse;
+    flex-direction: row;
+}
+.digButton{
+    width: 100px;
+    height: 100px;
+    background-color: lightgreen;
+}
+
+.opButton{
+    width: 100px;
+    height: 100px;
+    background-color: orange;
+}
+
+#zeroButton{
+    width: 200px;
+}
+
+.clearButton{
+    width: 300px;
+    height: 100px;
+    background-color: dodgerblue;
+}
