@@ -44,15 +44,20 @@ function operate(event){
     const operator = event.target.textContent; 
     if (!prevOperator){
         if(operator === "="){
-            return;
+            return; //if "=" is pressed 2 times in a row don't do anything
         }
         else{
             firstNum = Number(inputBar.value);
             prevOperator = operator;
             isStartingSecond = true;
+            coloredButton = event.target;
+            coloredButton.setAttribute("backgroundColor", "#ffba30");
+            coloredButton.style.backgroundColor = "#ffba30";
         }
     }
     else{
+        coloredButton.setAttribute("backgroundColor", "orange");
+        coloredButton.style.backgroundColor = "orange";
         let result;
         const secondNum = Number(inputBar.value);
         switch(prevOperator){
@@ -107,6 +112,12 @@ function createOperatesButtons(div){
 }
 
 function addDigToInput(event){
+    if(event.target.textContent === "."){
+        if(usedDot) return;
+        else{
+            usedDot = true;
+        }
+    }
     if(isStartingSecond){
         inputBar.value = null;
         display.value = display.value + event.target.textContent;
@@ -129,6 +140,8 @@ const calculateButton = document.querySelector(".calculateButton");
 let firstNum;
 let prevOperator = null;
 let isStartingSecond = false;
+let usedDot = false;
+let coloredButton;
 createDigButtons(digits);
 createOperatesButtons(operators);
 clearButton.addEventListener("click", () => {
