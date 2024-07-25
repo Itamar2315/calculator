@@ -63,6 +63,15 @@ function startSecondNumber(operator){
     coloredOperator.style.filter = "brightness(135%)";
 }
 
+function clear(){
+    display.value = firstNum = prevOperator = null;
+    if(coloredOperator){
+        coloredOperator.setAttribute("filter", "brightness(100%)");
+        coloredOperator.style.filter = "brightness(100%)";
+        coloredOperator = null;
+    }
+}
+
 function operate(event){
     const operator = event instanceof MouseEvent ? event.target.textContent : event.key; 
     if(!prevOperator){
@@ -90,6 +99,11 @@ function operate(event){
                 result = multiply([firstNum, secondNum]);
                 break;
             case "/":
+                if(secondNum === 0){
+                    alert(`Imagine that you have ${firstNum} cookies, and you split them evenly among zero friends. How many cookies does each person get? See? It doesn’t make sense. And Cookie Monster is sad that there are no cookies, and you are sad that you have no friends.`);
+                    clear();
+                    return;
+                }
                 result = divide(firstNum, secondNum);
                 break;
         }
@@ -108,6 +122,10 @@ function operate(event){
 }
 
 function addDigToInput(event){
+    if(inputBar.value.length > 20){
+        alert("You will crash me if you keep inserting those numbers x__x")
+        return;
+    }
     const key = event instanceof MouseEvent ? event.target.textContent : event.key;
     if(key === "."){
         if(usedDot) return;
@@ -148,12 +166,7 @@ createOperatesButtons(operators);
 
 
 clearButton.addEventListener("click", () => {
-    display.value = firstNum = prevOperator = null;
-    if(coloredOperator){
-        coloredOperator.setAttribute("backgroundColor", "orange");
-        coloredOperator.style.backgroundColor = "orange";
-        coloredOperator = null;
-    }
+    clear();
 });
 
 backspaceButton.addEventListener("click", () =>{
