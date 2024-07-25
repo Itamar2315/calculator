@@ -41,23 +41,24 @@ const divide = function(firstNum, secondNum){
 
 
 function operate(event){
-    const operator = event.target.textContent; 
-    if (!prevOperator){
+    const operator = event instanceof MouseEvent ? event.target.textContent : event.key; 
+    if(!prevOperator){
         if(operator === "="){
-            return; //if "=" is pressed 2 times in a row don't do anything
+            return; 
         }
         else{
             firstNum = Number(inputBar.value);
             prevOperator = operator;
             isStartingSecond = true;
-            coloredButton = event.target;
-            coloredButton.setAttribute("backgroundColor", "#ffba30");
-            coloredButton.style.backgroundColor = "#ffba30";
+            coloredButton = operatorsButtons[operator];
+            coloredButton.setAttribute("backgroundColor", "#ff8030");
+            coloredButton.style.backgroundColor = "#ff8030";
         }
     }
     else{
         coloredButton.setAttribute("backgroundColor", "orange");
         coloredButton.style.backgroundColor = "orange";
+        coloredButton = null;
         let result;
         const secondNum = Number(inputBar.value);
         switch(prevOperator){
@@ -102,17 +103,19 @@ function createDigButtons(div){
 
 function createOperatesButtons(div){
     const operators = ["+", "-", "*", "/", "="]
-    operators.forEach(element => {
+    operators.forEach(operator => {
         const opButton = document.createElement("button");
-        opButton.textContent = element;
+        opButton.textContent = operator;
         div.appendChild(opButton);
         opButton.addEventListener("click", operate)
         opButton.classList.add("opButton");
+        operatorsButtons[operator] = opButton;
     });
 }
 
 function addDigToInput(event){
-    if(event.target.textContent === "."){
+    const key = event instanceof MouseEvent ? event.target.textContent : event.key;
+    if(key === "."){
         if(usedDot) return;
         else{
             usedDot = true;
@@ -120,13 +123,15 @@ function addDigToInput(event){
     }
     if(isStartingSecond){
         inputBar.value = null;
-        display.value = display.value + event.target.textContent;
+        display.value = display.value + key;
         isStartingSecond = false;
     }
     else{
-        display.value = display.value + event.target.textContent;
+        display.value = display.value + key;
     }
 }
+
+
 
 
 
@@ -135,8 +140,10 @@ const home = document.querySelector(".home");
 const digits = document.querySelector(".digits");
 const operators = document.querySelector(".operators")
 const display = document.querySelector(".display");
-const clearButton = document.querySelector(".clearButton")
+const clearButton = document.querySelector("#clearButton")
 const calculateButton = document.querySelector(".calculateButton");
+const backspaceButton = document.querySelector("#backspaceButton");
+const operatorsButtons = {};
 let firstNum;
 let prevOperator = null;
 let isStartingSecond = false;
@@ -144,7 +151,41 @@ let usedDot = false;
 let coloredButton;
 createDigButtons(digits);
 createOperatesButtons(operators);
+
 clearButton.addEventListener("click", () => {
     display.value = firstNum = prevOperator = null;
+    if(coloredButton){
+        coloredButton.setAttribute("backgroundColor", "orange");
+        coloredButton.style.backgroundColor = "orange";
+        coloredButton = null;
+    }
 });
 
+backspaceButton.addEventListener("click", () =>{
+    const str = display.value;
+    display.value ? display.value = str.substring(0, str.length - 1) : null;
+});
+
+
+
+
+
+document.addEventListener("keydown",(event) => {
+    const digits = "0123456789.";
+    const operators = "+-*/=";
+    const keyName = event.key;
+    switch (true){
+        case digits.includes(keyName):
+            addDigToInput(event);
+            break;
+        
+        case operators.includes(keyName) || keyName === "Enter":
+            operate(event);
+            break;
+
+        case keyName === "Backspace":
+            const str = display.value;
+            display.value ? display.value = str.substring(0, str.length - 1) : null;
+            break;
+    }
+});
