@@ -2,16 +2,18 @@
 .calculator{
     text-align: center;
     margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
     width: 400px;
-    border: 4px solid black;
+    border: 16px solid black;
     background-color: black;  
 }
 
 .display{
     width: 390px;
-    height: 40px;
-    border-bottom: 4px solid black;
-    font-size: large;
+    height: 60px;
+    border-bottom: 8px solid black;
+    font-size: 28px;
 }
 
 .calButtons{
@@ -28,9 +30,8 @@ button{
 
 }
 button:active{
-    filter: brightness(135%);;
+    filter: brightness(150%);;
 }
-
 .operators{
     width: 100px;
 }
