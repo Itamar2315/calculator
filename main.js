@@ -22,43 +22,61 @@ const multiply = function(array) {
     total *= element, 1);
 };
 
-const power = function(num, powerOf) {
-    return Math.pow(num, powerOf);
-};
-
-const factorial = function(num) {
-    let total = 1;
-    for(let i = 1; i <= num; i++){
-        total *= i;
-    }
-    return total;
-    
-};
-
 const divide = function(firstNum, secondNum){
     return firstNum / secondNum;
 }
 
 
+function createDigButtons(div){
+    for(let i = 1; i < 10; i++){
+        const digButton = document.createElement("button");
+        digButton.textContent = i;
+        div.appendChild(digButton);   
+    }
+
+    const digitButtons = div.children;
+    for(let i = 0; i < digitButtons.length; i++){ // so it will add listeners to 1-9 + 0 and . (created in index)
+        digitButtons[i].addEventListener("click", addDigToInput);
+        digitButtons[i].classList.add("digButton");
+        
+    }
+}
+
+function createOperatesButtons(div){
+    const operators = ["+", "-", "*", "/", "="]
+    operators.forEach(operator => {
+        const opButton = document.createElement("button");
+        opButton.textContent = operator;
+        div.appendChild(opButton);
+        opButton.addEventListener("click", operate)
+        opButton.classList.add("opButton");
+        operatorsButtons[operator] = opButton;
+    });
+}
+
+function startSecondNumber(operator){
+    firstNum = Number(inputBar.value);
+    prevOperator = operator;
+    isStartingSecond = true;
+    coloredOperator = operatorsButtons[operator];
+    coloredOperator.setAttribute("filter", "brightness(135%)");
+    coloredOperator.style.filter = "brightness(135%)";
+}
+
 function operate(event){
     const operator = event instanceof MouseEvent ? event.target.textContent : event.key; 
     if(!prevOperator){
-        if(operator === "="){
+        if(operator === "=" || operator === "Enter"){
             return; 
         }
         else{
-            firstNum = Number(inputBar.value);
-            prevOperator = operator;
-            isStartingSecond = true;
-            coloredButton = operatorsButtons[operator];
-            coloredButton.setAttribute("backgroundColor", "#ff8030");
-            coloredButton.style.backgroundColor = "#ff8030";
+            startSecondNumber(operator);
         }
     }
     else{
-        coloredButton.setAttribute("backgroundColor", "orange");
-        coloredButton.style.backgroundColor = "orange";
-        coloredButton = null;
+        coloredOperator.setAttribute("filter", "brightness(100%)");
+        coloredOperator.style.filter = "brightness(100%)";
+        coloredOperator = null;
         let result;
         const secondNum = Number(inputBar.value);
         switch(prevOperator){
@@ -78,39 +96,15 @@ function operate(event){
         result = Math.round(result * 100) / 100;
         inputBar.value = result;
 
-        if(operator != "="){
-            prevOperator = operator;
+        if(operator != "=" && operator != "Enter"){
             firstNum = result;
+            startSecondNumber(operator);
         }
         else{
+            
             prevOperator = null;
         }
     }
-}
-
-function createDigButtons(div){
-    for(let i = 1; i < 10; i++){
-        const digButton = document.createElement("button");
-        digButton.textContent = i;
-        div.appendChild(digButton);
-    }
-    const digitButtons = div.children;
-    for(let i = 0; i < digitButtons.length; i++){
-        digitButtons[i].addEventListener("click", addDigToInput);
-        digitButtons[i].classList.add("digButton");
-    }
-}
-
-function createOperatesButtons(div){
-    const operators = ["+", "-", "*", "/", "="]
-    operators.forEach(operator => {
-        const opButton = document.createElement("button");
-        opButton.textContent = operator;
-        div.appendChild(opButton);
-        opButton.addEventListener("click", operate)
-        opButton.classList.add("opButton");
-        operatorsButtons[operator] = opButton;
-    });
 }
 
 function addDigToInput(event){
@@ -132,9 +126,6 @@ function addDigToInput(event){
 }
 
 
-
-
-
 const inputBar = document.querySelector("input");
 const home = document.querySelector(".home");
 const digits = document.querySelector(".digits");
@@ -148,16 +139,20 @@ let firstNum;
 let prevOperator = null;
 let isStartingSecond = false;
 let usedDot = false;
-let coloredButton;
+let coloredOperator;
 createDigButtons(digits);
 createOperatesButtons(operators);
 
+
+
+
+
 clearButton.addEventListener("click", () => {
     display.value = firstNum = prevOperator = null;
-    if(coloredButton){
-        coloredButton.setAttribute("backgroundColor", "orange");
-        coloredButton.style.backgroundColor = "orange";
-        coloredButton = null;
+    if(coloredOperator){
+        coloredOperator.setAttribute("backgroundColor", "orange");
+        coloredOperator.style.backgroundColor = "orange";
+        coloredOperator = null;
     }
 });
 
@@ -167,13 +162,13 @@ backspaceButton.addEventListener("click", () =>{
 });
 
 
-
-
-
 document.addEventListener("keydown",(event) => {
     const digits = "0123456789.";
     const operators = "+-*/=";
     const keyName = event.key;
+    if(keyName === "Enter"){ //enter shouldn't press on buttons like its default behavior 
+        event.preventDefault();
+    }
     switch (true){
         case digits.includes(keyName):
             addDigToInput(event);
@@ -189,3 +184,6 @@ document.addEventListener("keydown",(event) => {
             break;
     }
 });
+
+
+
