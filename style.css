@@ -24,6 +24,11 @@ button{
     border-radius: 8px;
     font-size: large;
     font-weight: bold;
+    outline: none;
+
+}
+button:active{
+    filter: brightness(135%);;
 }
 
 .operators{
@@ -40,8 +45,11 @@ button{
 .digButton{
     width: 100px;
     height: 100px;
-    background-color: #0059ff;
+    background-color: rgb(41, 130, 255);
 }
+/* .digButton:active{
+    background-color: rgb(80, 170, 255);
+} */
 
 .opButton{
     width: 100px;
@@ -70,3 +78,5 @@ button{
     height: 100px;
     background-color: #55bd01;
 }
+
+
